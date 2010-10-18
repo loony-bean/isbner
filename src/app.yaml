@@ -1,0 +1,21 @@
+application: booksack
+version: 10
+runtime: python
+api_version: 1
+
+handlers:
+- url: /css
+  static_dir: css
+
+- url: /img
+  static_dir: img
+
+- url: /favicon.ico
+  static_files: img/favicon.ico
+  upload: img/favicon.ico
+
+- url: /
+  script: main.py
+  
+- url: /(.*)
+  script: main.py
