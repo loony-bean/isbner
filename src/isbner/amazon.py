@@ -6,7 +6,7 @@ from credentials import AMAZON_LICENSE_KEY, AMAZON_SECRET_ACCESS_KEY
 class Amazon(Adaptor):
     def __init__(self):
         self._name = "Amazon"
-        self._weight = 50
+        self._weight = 55
 
     def _run(self, isbn):
         import ecs
@@ -14,16 +14,19 @@ class Amazon(Adaptor):
         ecs.setLicenseKey(AMAZON_LICENSE_KEY)
         ecs.setSecretAccessKey(AMAZON_SECRET_ACCESS_KEY)
 
-        result = dict()
         try:
+            result = dict()
             item = ecs.ItemSearch(isbn, SearchIndex='Books')
             result['title'] = item[0].Title
             result['author'] = item[0].Author
+            if result['author'].__class__.__name__ == 'list':
+                result['author'] = ', '.join(result['author'])
             result['publisher'] = item[0].Manufacturer
             result['isbn'] = isbn
             result['source'] = item[0].DetailPageURL
-        finally:            
             return result
+        except:
+            return None
 
     def check(self):
         return self._run('9780671201586') == {

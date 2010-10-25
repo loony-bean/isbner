@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from adaptor import Adaptor
+from utils import fetch
 
 class Labirint(Adaptor):
     def __init__(self):
@@ -11,11 +12,11 @@ class Labirint(Adaptor):
         from BeautifulSoup import BeautifulSoup
 
         url = "http://www.labirint.ru/search/?txt=%s" % (isbn)
-        soup = BeautifulSoup(self.fetch(url))
+        soup = BeautifulSoup(fetch(url))
 
         result = dict()
         result['source'] = url
-        return result
+        return None
 
     def check(self):
         return self._run('9785379003067') == {
