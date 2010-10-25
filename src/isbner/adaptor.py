@@ -10,14 +10,12 @@ class Adaptor(object):
     def _run(self, isbn):
         return None
 
-    def run(self, isbn):
-        return self._run(sanitize(isbn))
-
     def check(self):
         return False
 
     def dump(self, isbn):
-        data = self.run(isbn)
+        data = self._run(isbn)
+
         if data is not None:
             data = {
                 'fields': dict(zip(data.keys(), 
