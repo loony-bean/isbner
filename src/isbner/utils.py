@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 
 try:
-    from google.appengine.api.urlfetch import fetch
+    from google.appengine.api.urlfetch import fetch as urlfetch
+    def fetch(url):
+        return urlfetch(url).content
+
 except ImportError:
     from urllib import urlopen
     def fetch(url):
@@ -15,7 +18,7 @@ def sanitize(isbn):
     >>> sanitize('020-155 80 25')
     0201558025
     """
-    return filter(str.isalnum, isbn)
+    return filter(str.isalnum, str(isbn))
 
 def merge(dump, add):
     """
