@@ -18,12 +18,13 @@ class Amazon(Adaptor):
             result = dict()
             item = ecs.ItemSearch(isbn, SearchIndex='Books')
             result['title'] = item[0].Title
-            result['author'] = item[0].Author
-            if result['author'].__class__.__name__ == 'list':
-                result['author'] = ', '.join(result['author'])
+            result['author'] = item[0].Author                
             result['publisher'] = item[0].Manufacturer
             result['isbn'] = isbn
             result['source'] = item[0].DetailPageURL
+            for k in result.keys():
+                if result[k].__class__.__name__ == 'list':
+                    result[k] = ', '.join(result[k])
             return result
         except:
             return None
