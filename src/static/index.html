@@ -20,7 +20,7 @@
 <div class="content" valign="top">
 
 <form action="/view/" method="get">
-    <div>Enter ISBN: <input name="isbn" value="{{ book.ISBN }}"/>
+    <div>Enter ISBN: <input name="isbn" value="{{ book.isbn }}"/>
     <input type="submit" value="Find"></div>
 </form>
 
@@ -35,17 +35,6 @@
   </ul>
 </div>
 {% endif %}
-
-{% if history %}
-<h2>Latest 10 queries <a class="rss" href="/view/rss.xml"><img src="../img/rss.png" /></a></h2>
-    <ul>
-    {% for item in history %}
-    <li><a href="/view/?isbn={{ item.ISBN }}">{{ item.title }}</a></li>
-    {% endfor %}
-    </ul>
-{% endif %}
-
-</div>
 
 </body>
 </html>
