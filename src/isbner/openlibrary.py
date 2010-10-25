@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from adaptor import Adaptor
+from utils import fetch
 
 class OpenLibrary(Adaptor):
     def __init__(self):
@@ -14,10 +15,10 @@ class OpenLibrary(Adaptor):
             import simplejson
 
         url = 'http://openlibrary.org/api/books?bibkeys=ISBN:%s&jscmd=data&format=json' % (isbn)
-        json = simplejson.loads(self.fetch(url))
+        json = simplejson.loads(fetch(url))
 
-        result = dict()
         try:
+            result = dict()
             json = json['ISBN:'+isbn]
             result['title'] = json['title']
             result['author'] = ', '.join([i['name'] for i in json['authors']])
@@ -25,8 +26,9 @@ class OpenLibrary(Adaptor):
             result['publisher'] = ', '.join([i['name'] for i in json['publishers']])
             result['date'] = json['publish_date']
             result['source'] = json['url']
-        finally:            
             return result
+        except:
+            return None
 
     def check(self):
         return self._run('0201558025') == {

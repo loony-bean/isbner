@@ -6,3 +6,4 @@ from openlibrary import OpenLibrary
 from labirint import Labirint
 
 all = [LiveLib, Amazon, OpenLibrary, Labirint]
+names = map(lambda a: a().name, all)

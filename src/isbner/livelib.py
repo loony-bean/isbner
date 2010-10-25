@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from adaptor import Adaptor
+from utils import fetch
 
 class LiveLib(Adaptor):
     def __init__(self):
@@ -11,10 +12,10 @@ class LiveLib(Adaptor):
         from BeautifulSoup import BeautifulSoup
 
         url = "http://www.livelib.ru/find/%s" % (isbn)
-        soup = BeautifulSoup(self.fetch(url))
+        soup = BeautifulSoup(fetch(url))
 
-        result = dict()
         try:
+            result = dict()
             result['title'] = soup.find('div', {'class': 'title'}).a.string
             result['author'] = soup.find('a', {'class': 'author unnoticeable'}).string
             span_info = soup.find('span', {'class': 'info'})
@@ -26,8 +27,9 @@ class LiveLib(Adaptor):
             span_info = span_info.nextSibling
             result['isbn'] = span_info.string.replace(u'ISBN: ', '').replace('-', '')
             result['source'] = url
-        finally:
             return result
+        except:
+            return None
 
     def check(self):
         return self._run('9785379003067') == {
