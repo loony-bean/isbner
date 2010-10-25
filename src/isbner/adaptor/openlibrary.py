@@ -10,7 +10,7 @@ class OpenLibrary(Adaptor):
     def _run(self, isbn):
         try:
             from django.utils import simplejson
-        except ImportError
+        except ImportError:
             import simplejson
 
         url = 'http://openlibrary.org/api/books?bibkeys=ISBN:%s&jscmd=data&format=json' % (isbn)

@@ -6,6 +6,9 @@ from google.appengine.ext import webapp
 
 from handlers import *
 
+class AdaptorWorker(webapp.RequestHandler):
+    pass
+
 def main():
     application = webapp.WSGIApplication( [( '/', MainHandler ),
                                            ( '/view/?', ViewHandler ),
