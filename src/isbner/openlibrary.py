@@ -14,7 +14,7 @@ class OpenLibrary(Adaptor):
         except ImportError:
             import simplejson
 
-        url = 'http://openlibrary.org/api/books?bibkeys=ISBN:%s&jscmd=data&format=json' % (isbn)
+        url = 'http://openlibrary.org/api/books?bibkeys=ISBN:%s&jscmd=data&format=json' % isbn
         json = simplejson.loads(fetch(url))
 
         try:

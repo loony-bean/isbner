@@ -11,7 +11,7 @@ class Labirint(Adaptor):
     def _run(self, isbn):
         from BeautifulSoup import BeautifulSoup
 
-        url = "http://www.labirint.ru/search/?txt=%s" % (isbn)
+        url = "http://www.labirint.ru/search/?txt=%s" % isbn
         soup = BeautifulSoup(fetch(url))
 
         result = dict()

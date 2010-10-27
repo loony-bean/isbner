@@ -11,7 +11,7 @@ class LiveLib(Adaptor):
     def _run(self, isbn):
         from BeautifulSoup import BeautifulSoup
 
-        url = "http://www.livelib.ru/find/%s" % (isbn)
+        url = "http://www.livelib.ru/find/%s" % isbn
         soup = BeautifulSoup(fetch(url))
 
         try:
