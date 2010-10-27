@@ -28,23 +28,28 @@ class GetHandler(webapp.RequestHandler):
         isbn = isbner.utils.sanitize(self.request.get('isbn'))
         data = memcache.get(isbn, namespace='isbn')
         if data is not None:
-            self.response.headers['Content-Type'] = 'application/json'
             self.response.set_status(200)
-            self.response.out.write(simplejson.dumps(data))
         else:
-            self.error(404)
+            for worker in isbner.names:
+                taskqueue.add(url='/worker/%s' % worker, params={'isbn': isbn})
+            self.response.set_status(204)
+            data = isbner.STUB
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.out.write(simplejson.dumps(data))
 
 class ViewHandler(webapp.RequestHandler):
     def get(self):
         isbn = isbner.utils.sanitize(self.request.get('isbn'))
-        for worker in isbner.names:
-            taskqueue.add(url='/worker/%s' % worker, params={'isbn': isbn})
-
         template_values = {'site': {'name': 'booksack'},
                            'book': {'isbn': isbn}}
         path = os.path.join(os.path.dirname(__file__), 'static/index.html')
+
         try:
-            data = simplejson.loads(isbner.utils.fetch('%s/get/?isbn=%s' % (self.request.host_url, isbn)))
+            host_url = self.request.host_url
+            if host_url.find('localhost') > 0:
+                host_url = 'http://localhost:8081'
+            # Practice what you preach
+            data = simplejson.loads(isbner.utils.fetch('%s/get/?isbn=%s' % (host_url, isbn)))           
         except:
             pass
         else:
@@ -58,7 +63,7 @@ class ViewHandler(webapp.RequestHandler):
         self.response.out.write(template.render(path, template_values))
 
 def workers_factory():
-    for (name, adaptor_class) in zip(isbner.names, isbner.all):
+    for (name, adaptor_class) in zip(isbner.names, isbner.classes):
         class AdaptorWorker(webapp.RequestHandler):
             def post(self):
                 isbn = isbner.utils.sanitize(self.request.get('isbn'))
@@ -67,7 +72,7 @@ def workers_factory():
                     cached = memcache.get(isbn, namespace='isbn')
                     if cached is not None:
                         data = isbner.utils.merge(cached, data)
-                    memcache.set(isbn, data, namespace='isbn')
+                    memcache.set(isbn, data, time=86400, namespace='isbn')
                     self.response.set_status(200)
             adaptor = adaptor_class()
 

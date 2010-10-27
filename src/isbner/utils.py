@@ -1,24 +1,15 @@
 # -*- coding: utf-8 -*-
 
-try:
-    from google.appengine.api.urlfetch import fetch as urlfetch
-    def fetch(url):
-        return urlfetch(url).content
+from re import compile, sub
 
-except ImportError:
-    from urllib import urlopen
-    def fetch(url):
-        try:
-            return urlopen(url).read()
-        except:
-            return ""
+NUMS = compile('\D')
 
 def sanitize(isbn):
     """
     >>> sanitize('020-155 80 25')
     0201558025
     """
-    return filter(str.isalnum, str(isbn))
+    return NUMS.sub('', str(isbn))
 
 def merge(dump, add):
     """
@@ -37,3 +28,15 @@ def merge(dump, add):
         for k in add['sources'].keys():
             dump['sources'][k] = add['sources'][k]
     return dump
+
+try:
+    from google.appengine.api.urlfetch import fetch as urlfetch
+    def fetch(url):
+        return urlfetch(url).content
+except ImportError:
+    from urllib import urlopen
+    def fetch(url):
+        try:
+            return urlopen(url).read()
+        except:
+            return ""
