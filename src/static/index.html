@@ -26,15 +26,12 @@
 
 {% if info %}
 <div class="book" style="background-color: WhiteSmoke;">
-  <ul>
-    {% for pair in info %}
-        {% if pair.value %}
-        <li>{{ pair.key }}: {{ pair.value }}</li>
-        {% endif %}
-    {% endfor %}
-  </ul>
+  {% include "fields.html" %}
 </div>
 {% endif %}
 
+</div>
+
+{% include "footer.html" %}
 </body>
 </html>

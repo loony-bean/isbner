@@ -1,0 +1,7 @@
+  <ul>
+    {% for pair in info %}
+        {% if pair.value %}
+        <li>{{ pair.key }}: {{ pair.value }}</li>
+        {% endif %}
+    {% endfor %}
+  </ul>
