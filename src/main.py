@@ -42,8 +42,10 @@ class ViewHandler(webapp.RequestHandler):
         isbn = isbner.utils.sanitize(self.request.get('isbn'))
         template_values = {'site': {'name': 'booksack'},
                            'book': {'isbn': isbn}}
-        path = os.path.join(os.path.dirname(__file__), 'static/index.html')
-
+        if self.request.get('fields'):
+            path = os.path.join(os.path.dirname(__file__), 'static/fields.html')
+        else:
+            path = os.path.join(os.path.dirname(__file__), 'static/index.html')
         try:
             host_url = self.request.host_url
             if host_url.find('localhost') > 0:
