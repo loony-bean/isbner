@@ -4,7 +4,8 @@ from utils import sanitize
 
 class Adaptor(object):
     def __init__(self):
-        self._name = "Default"
+        self._name = 'Default'
+        self._url = 'http://www.example.com/'
         self._weight = 0
 
     def _run(self, isbn):
@@ -27,4 +28,5 @@ class Adaptor(object):
         return data
 
     name = property(fget=lambda self: self._name)
+    url = property(fget=lambda self: self._url)
     weight = property(fget=lambda self: self._weight)

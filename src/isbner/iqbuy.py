@@ -2,18 +2,21 @@
 
 from adaptor import Adaptor
 from utils import fetch
+from BeautifulSoup import BeautifulSoup
 import re
+
+rx_data = re.compile('<script(?:.*?)>')
+rx_publisher = re.compile('.*?\((\d*)\)')
 
 class IQBuy(Adaptor):
     def __init__(self):
         self._name = 'IQBuy'
+        self._url = 'http://books.iqbuy.ru/'
         self._weight = 10
 
     def _run(self, isbn):
-        from BeautifulSoup import BeautifulSoup
-
         url = 'http://books.iqbuy.ru/categories_offer/%s' % (isbn)
-        data = re.sub('<script(?:.*?)>', '', fetch(url))
+        data = rx_data.sub('', fetch(url))
         soup = BeautifulSoup(data)
 
         try:
@@ -26,7 +29,7 @@ class IQBuy(Adaptor):
             print result['series']
             publisher = series.findNext('p')
             result['publisher'] = publisher.strong.string.replace('  ', ' ').strip()
-            reg = re.search('.*?\((\d*)\)', str(publisher))
+            reg = rx_publisher.search(str(publisher))
             if reg: result['date'] = reg.group(1)
             result['source'] = url
             result['isbn'] = isbn
@@ -44,8 +47,5 @@ class IQBuy(Adaptor):
             'isbn': u'9785699306985',
             'source': 'http://books.iqbuy.ru/categories_offer/9785699306985'}
 
-def main():
-    print IQBuy().check()
-
 if __name__ == '__main__':
-    main()
+    print IQBuy().check()

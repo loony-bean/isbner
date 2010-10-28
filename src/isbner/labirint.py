@@ -2,20 +2,23 @@
 
 from adaptor import Adaptor
 from utils import fetch
+from BeautifulSoup import BeautifulSoup
 import re
+
+rx_content = re.compile('<!-- content -->(.*)<!--product-info-->', re.S)
+rx_date = re.compile('.*?(\d+)')
 
 class Labirint(Adaptor):
     def __init__(self):
         self._name = 'Labirint'
+        self._url = 'http://www.labirint.ru/'
         self._weight = 10
 
     def run(self, isbn):
-        from BeautifulSoup import BeautifulSoup
-
         url = 'http://www.labirint.ru/search/?txt=%s' % (isbn)
 
         try:
-            reg = re.search('<!-- content -->(.*)<!--product-info-->', fetch(url).decode('cp1251'), re.S)
+            reg = rx_content.search(fetch(url).decode('cp1251'))
             soup = BeautifulSoup(reg.group(0))
 
             result = dict()
@@ -24,16 +27,15 @@ class Labirint(Adaptor):
             result['series'] = soup.find('span', {'class': 'category'}).next.next.attrs[1][1]
             result['publisher'] = soup.find('span', {'class': 'brand'}).next.next.attrs[1][1]
             div = soup.find('div', {'class': 'isbn smallbr'})
-            result['isbn'] = div.next.replace('ISBN: ', '')
+            result['isbn'] = isbn
             div = div.findNext('div')
             result['author'] = div.next.next.string
             div = div.findNext('div')
-            reg = re.search('.*?(\d+)', div.next.next.next.next)
+            reg = rx_date.search(div.next.next.next.next)
             if reg: result['date'] = reg.group(1)
             result['source'] = url
             return result
-        except Exception, e:
-            print e
+        except:
             return None
 
     def check(self):
@@ -42,13 +44,10 @@ class Labirint(Adaptor):
             'photo': u'http://img.labirint.ru/images/books4/150957/big.jpg',
             'series': u'Пути философии',
             'publisher': u'Сибирское университетское издательство',
-            'isbn': u'978-5-379-00306-7',
+            'isbn': u'9785379003067',
             'author': u'Рассел Бертран',
             'date': u'2007',
             'source': 'http://www.labirint.ru/search/?txt=9785379003067'}
 
-def main():
-    print Labirint().check()
-
 if __name__ == '__main__':
-    main()
+    print Labirint().check()
