@@ -1,0 +1,11 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+{% if info %}
+<div class="book">
+  {% include "fields.html" %}
+</div>
+{% endif %}
+
+{% endblock %}

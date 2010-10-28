@@ -11,15 +11,29 @@ from django.utils import simplejson
 
 import isbner
 
+SITE_NAME = 'isbner'
+
 class MainHandler(webapp.RequestHandler):
     def get(self):
-        template_values = {'site': {'name': 'booksack'}}
+        template_values = {'site': {'name': SITE_NAME}}
         path = os.path.join(os.path.dirname(__file__), 'static/index.html')
+        self.response.out.write(template.render(path, template_values))
+
+class TermsHandler(webapp.RequestHandler):
+    def get(self):
+        template_values = {'site': {'name': SITE_NAME}}
+        path = os.path.join(os.path.dirname(__file__), 'static/terms.html')
+        self.response.out.write(template.render(path, template_values))
+
+class APIHandler(webapp.RequestHandler):
+    def get(self):
+        template_values = {'site': {'name': SITE_NAME}}
+        path = os.path.join(os.path.dirname(__file__), 'static/api.html')
         self.response.out.write(template.render(path, template_values))
 
 class StatusHandler(webapp.RequestHandler):
     def get(self):
-        template_values = {'site': {'name': 'booksack'}}
+        template_values = {'site': {'name': SITE_NAME}}
         path = os.path.join(os.path.dirname(__file__), 'static/status.html')
         self.response.out.write(template.render(path, template_values))
 
@@ -40,12 +54,12 @@ class GetHandler(webapp.RequestHandler):
 class ViewHandler(webapp.RequestHandler):
     def get(self):
         isbn = isbner.utils.sanitize(self.request.get('isbn'))
-        template_values = {'site': {'name': 'booksack'},
+        template_values = {'site': {'name': SITE_NAME},
                            'book': {'isbn': isbn}}
         if self.request.get('fields'):
             path = os.path.join(os.path.dirname(__file__), 'static/fields.html')
         else:
-            path = os.path.join(os.path.dirname(__file__), 'static/index.html')
+            path = os.path.join(os.path.dirname(__file__), 'static/view.html')
         try:
             host_url = self.request.host_url
             if host_url.find('localhost') > 0:
@@ -84,7 +98,9 @@ def main():
     urls = [('/', MainHandler),
             ('/get/?', GetHandler),
             ('/view/?', ViewHandler),
-            ('/status/', StatusHandler)]
+            ('/terms/?', TermsHandler),
+            ('/api/?', APIHandler),
+            ('/status/?', StatusHandler)]
 
     for (name, worker) in workers_factory():
         urls.append(('/worker/%s' % name, worker))

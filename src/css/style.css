@@ -34,6 +34,10 @@ h3
 	font-size: 11.3pt;
 }
 
+.main {
+    margin: 0px 10px;
+}
+
 .title
 {
     padding: 4pt;
@@ -49,7 +53,7 @@ h3
 .title hr
 {
  	height: 1.5pt;
- 	width: 100%;/*240pt;*/
+ 	width: 100%;
  	background-color: red;
  	color: red;
 }
@@ -62,14 +66,16 @@ p
 
 .book
 {
-    padding-top: 2pt;
-    padding-bottom: 2pt;
+    background-color: WhiteSmoke;
+    padding: 2px 12px;
     margin-top: 6pt;
 }
 
+.quiet {color: #999;}
+
 .content
 {
-    padding: 10pt;
+    padding: 10px;
 }
 
 .content ol, .content ul, .content ol, .content ul
@@ -90,3 +96,86 @@ p
     padding-bottom: 3pt;
     border-style: none;
 }
+
+/* Lists */
+
+ul.plain-list {
+    margin: 0;
+    list-style: none;
+}
+
+/* Floats */   
+
+.left,.alignleft {float: left;}
+.right,.alignright {float: right;}
+
+.clear,.clearer {clear: both;}
+.clearer {
+	display: block;
+	font-size: 0;
+	line-height: 0;
+	height: 0;
+}
+
+/* Feed */
+
+a.feed {
+	background: url('../img/icon-feed.gif') no-repeat left center;
+	padding-left: 18px;
+}
+
+a.rdf {
+	background: url('../img/icon-rdf.png') no-repeat left center;
+	padding-left: 18px;
+}
+
+a.microformat {
+	background: url('../img/icon-microformats.png') no-repeat left center;
+	padding-left: 18px;
+}
+
+/* Dashboard */
+
+#dashboard {
+	border: 1px solid #E7E7E7;
+    margin-top: 30px;
+	font-size: 0.9em;
+}
+
+#dashboard .column {
+    /*width: 25%;*/
+    padding: 0px 6px;
+}
+
+#dashboard .column-content {
+	padding: 14px 16px;
+}
+#dashboard .column-title {
+	color: #666;
+	font-size: 1.0em;
+	font-weight: bold;
+	padding-bottom: 5px;
+}
+#dashboard a {color: #456;}
+#dashboard a:hover {color: #000;}
+
+/* Footer */
+
+#footer {
+	font-size: 0.9em;
+    padding: 10px 10px;
+}
+
+#footer a {
+	color: #579;
+	text-decoration: none;
+}
+#footer .right, #footer .right a {
+	color: #999;
+	text-decoration: none;
+}
+#footer .text-separator {
+	padding: 0 3px;
+	color: #BBB;
+}
+#footer a:hover {color: #000;}

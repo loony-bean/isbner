@@ -1,3 +1,4 @@
+<!--
   <ul>
     {% for pair in info %}
         {% if pair.value %}
@@ -5,3 +6,16 @@
         {% endif %}
     {% endfor %}
   </ul>
+-->
+    <div class="book">
+      <table>
+        {% for pair in info %}
+            {% if pair.value %}
+            <tr>
+                <td style="padding-right: 10px;">{{ pair.key }}:</td>
+                <td>{{ pair.value }}</td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+      </table>
+    </div>
