@@ -3,17 +3,18 @@
 from adaptor import Adaptor
 from utils import fetch
 
+try:
+    from django.utils import simplejson
+except ImportError:
+    import simplejson
+
 class OpenLibrary(Adaptor):
     def __init__(self):
-        self._name = "OpenLibrary"
+        self._name = 'OpenLibrary'
+        self._url = 'http://openlibrary.org/'
         self._weight = 50
 
     def _run(self, isbn):
-        try:
-            from django.utils import simplejson
-        except ImportError:
-            import simplejson
-
         url = 'http://openlibrary.org/api/books?bibkeys=ISBN:%s&jscmd=data&format=json' % isbn
         json = simplejson.loads(fetch(url))
 
@@ -38,3 +39,6 @@ class OpenLibrary(Adaptor):
             'publisher': u'Addison-Wesley',
             'date': u'1994',
             'source': u'http://openlibrary.org/books/OL1429049M/Concrete_mathematics'}
+
+if __name__ == '__main__':
+    print OpenLibrary().check()

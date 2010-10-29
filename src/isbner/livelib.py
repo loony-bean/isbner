@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 
 from adaptor import Adaptor
+from BeautifulSoup import BeautifulSoup
 from utils import fetch
 
 class LiveLib(Adaptor):
     def __init__(self):
-        self._name = "LiveLib"
+        self._name = 'LiveLib'
+        self._url = 'http://www.livelib.ru/'
         self._weight = 10
 
     def _run(self, isbn):
-        from BeautifulSoup import BeautifulSoup
-
-        url = "http://www.livelib.ru/find/%s" % isbn
+        url = 'http://www.livelib.ru/find/%s' % isbn
         soup = BeautifulSoup(fetch(url))
 
         try:
@@ -39,3 +39,6 @@ class LiveLib(Adaptor):
             'date': u'2007',
             'isbn': u'9785379003067, 5379003060',
             'source': u'http://www.livelib.ru/find/9785379003067'}
+
+if __name__ == '__main__':
+    print LiveLib().check()
