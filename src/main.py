@@ -28,12 +28,11 @@ class GetHandler(webapp.RequestHandler):
 class ViewHandler(webapp.RequestHandler):
     def get(self):
         isbn = isbner.utils.sanitize(self.request.get('isbn'))
-        template_values = {'site': {'name': SITE_NAME},
-                           'book': {'isbn': isbn}}
+        template_values = {'book': {'isbn': isbn}}
         if self.request.get('fields'):
-            path = os.path.join(os.path.dirname(__file__), 'static/fields.html')
+            path = os.path.join(os.path.dirname(__file__), 'static', 'fields.html')
         else:
-            path = os.path.join(os.path.dirname(__file__), 'static/view.html')
+            path = os.path.join(os.path.dirname(__file__), 'static', 'view.html')
         try:
             host_url = self.request.host_url
             if host_url.find('localhost') > 0:
@@ -57,13 +56,12 @@ def workers_factory():
         class AdaptorWorker(webapp.RequestHandler):
             def post(self):
                 isbn = isbner.utils.sanitize(self.request.get('isbn'))
-                data = self.adaptor.dump(isbn)
-                if data is not None:
-                    cached = memcache.get(isbn, namespace='isbn')
-                    if cached is not None:
-                        data = isbner.utils.merge(cached, data)
-                    memcache.set(isbn, data, time=86400, namespace='isbn')
-                    self.response.set_status(200)
+                data = self.adaptor.dump(isbn)                
+                cached = memcache.get(isbn, namespace='isbn')
+                if cached is not None:
+                    data = isbner.utils.merge(cached, data)
+                memcache.set(isbn, data, time=86400, namespace='isbn')
+                self.response.set_status(200)
             adaptor = adaptor_class()
         yield((name, AdaptorWorker))
 
