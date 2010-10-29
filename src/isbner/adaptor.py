@@ -16,7 +16,6 @@ class Adaptor(object):
 
     def dump(self, isbn):
         data = self._run(isbn)
-
         if data is not None:
             data = {
                 'fields': dict(zip(data.keys(), 
@@ -25,6 +24,8 @@ class Adaptor(object):
                 'sources': { self._name: data['source']}
                 }
             del data['fields']['source']
+        else:
+            data = {'fields': {}, 'sources': {}}
         return data
 
     name = property(fget=lambda self: self._name)
