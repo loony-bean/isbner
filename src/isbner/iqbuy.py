@@ -26,7 +26,6 @@ class IQBuy(Adaptor):
             result['author'] = authors.strong.string.replace('  ', ' ')
             series = authors.findNext('p')
             result['series'] = series.strong.string
-            print result['series']
             publisher = series.findNext('p')
             result['publisher'] = publisher.strong.string.replace('  ', ' ').strip()
             reg = rx_publisher.search(str(publisher))
