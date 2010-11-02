@@ -2,6 +2,11 @@
 
 {% block content %}
 
+<form action="/view/" method="get">
+    <div>Enter ISBN: <input name="isbn" value="{{ book.isbn }}"/>
+    <input type="submit" value="Find"></div>
+</form>
+
 <div id="bookinfo"></div>
 <div id="progress"><img src="../img/ajax-loader.gif"></div>
 

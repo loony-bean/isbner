@@ -16,9 +16,8 @@ class ISBNDb(Adaptor):
         self._weight = 40
 
     def _run(self, isbn):
-        keywords = '+'.join( [ 'details', 'texts', 'authors', 'subjects' ] )
-
-        url = 'http://isbndb.com/api/books.xml?access_key=%s&index1=isbn&value1=%s&results=%s' % ( ISBNDB_ACCESS_KEY, isbn, keywords )
+        keywords = '+'.join(['details', 'texts', 'authors', 'subjects'])
+        url = 'http://isbndb.com/api/books.xml?access_key=%s&index1=isbn&value1=%s&results=%s' % (ISBNDB_ACCESS_KEY, isbn, keywords)
         soup = BeautifulSoup(fetch(url))
 
         try:

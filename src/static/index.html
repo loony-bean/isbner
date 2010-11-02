@@ -8,11 +8,11 @@
 	<meta name="author" content="" />
 	<link rel="stylesheet" type="text/css" href="/css/style.css" media="screen" />
 	<link rel="search" type="{{ opensearch.type }}" href="{{ opensearch.href }}" title="{{ opensearch.title }}" />
-	<title>{{ site.name }}</title>
     <script type='text/javascript' src='http://www.google.com/jsapi'></script>
     <script type='text/javascript'>
         google.load("prototype", "1.6.1.0");
     </script>
+	<title>isbner</title>
 </head>
 
 <body id="top">
@@ -24,14 +24,9 @@
 
 <div class="content" valign="top">
 
-<form action="/view/" method="get">
-    <div>Enter ISBN: <input name="isbn" value="{{ book.isbn }}"/>
-    <input type="submit" value="Find"></div>
-</form>
-
 {% block content %}
 
-{% include "about.html" %}
+{% include "main.html" %}
 
 {% endblock %}
 
