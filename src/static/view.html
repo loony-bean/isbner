@@ -2,10 +2,28 @@
 
 {% block content %}
 
-{% if info %}
-<div class="book">
-  {% include "fields.html" %}
-</div>
-{% endif %}
+<div id="bookinfo"></div>
+<div id="progress"><img src="../img/ajax-loader.gif"></div>
 
+<script>
+stopUpdater = function() {
+  updater.stop();
+  Element.hide('progress');
+}
+
+timeout = setTimeout(stopUpdater, 20000);
+
+var updater = new Ajax.PeriodicalUpdater('bookinfo', '/view/?isbn={{book.isbn}}&fields=1',
+  {
+    method:'get',
+    frequency: 0.25,
+    decay: 2,
+    onSuccess: function(transport){
+      var data = document.getElementById("status");
+      if (data) {
+        if(data.value == "complete") { stopUpdater(); }
+      }
+    },
+  });
+</script>
 {% endblock %}
