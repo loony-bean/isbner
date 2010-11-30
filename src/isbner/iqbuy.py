@@ -24,8 +24,10 @@ class IQBuy(Adaptor):
             result = dict()
             result['title'] = soup.find('h2', {'class': 'book-name'}).string
             authors = soup.find('p', {'class': 'book-author'})
-            result['author'] = authors.strong.string.replace('  ', ' ')
-            # series field is optional
+            # author is optional
+            if authors.strong.string:
+                result['author'] = authors.strong.string.replace('  ', ' ')
+            # series is optional
             series = authors.findNext('p')
             reg = rx_series.search(series.encode("cp1251"))
             if reg:
