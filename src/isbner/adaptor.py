@@ -26,7 +26,6 @@ class Adaptor(object):
             del data['fields']['source']
         else:
             data = {'fields': {}, 'sources': {}}
-        data['providers'] = [self._name]
         return data
 
     name = property(fget=lambda self: self._name)

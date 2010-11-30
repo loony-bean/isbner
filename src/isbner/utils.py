@@ -27,8 +27,6 @@ def merge(dump, add):
     if merged:
         for k in add['sources'].keys():
             dump['sources'][k] = add['sources'][k]
-    if not add['providers'][0] in dump['providers']:
-        dump['providers'].append(add['providers'][0])
     return dump
 
 try:
