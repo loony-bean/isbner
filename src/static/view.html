@@ -4,11 +4,12 @@
 
 <form action="/view/" method="get">
     <div>Enter ISBN: <input name="isbn" value="{{ book.isbn }}"/>
-    <input type="submit" value="Find"></div>
+    <input type="submit" value="Find">
+    <span id="progress"><img src="../img/ajax-loader.gif"></span>
+    </div>
 </form>
 
-<div id="bookinfo"></div>
-<div id="progress"><img src="../img/ajax-loader.gif"></div>
+<div class="book" id="bookinfo"></div>
 
 <script>
 stopUpdater = function() {
@@ -18,17 +19,53 @@ stopUpdater = function() {
 
 timeout = setTimeout(stopUpdater, 20000);
 
-var updater = new Ajax.PeriodicalUpdater('bookinfo', '/view/?isbn={{book.isbn}}&fields=1',
+var updater = new Ajax.PeriodicalUpdater('', '/get/?isbn={{book.isbn}}',
   {
     method:'get',
     frequency: 0.25,
     decay: 2,
-    onSuccess: function(transport){
-      var data = document.getElementById("status");
-      if (data) {
-        if(data.value == "complete") { stopUpdater(); }
-      }
-    },
+    onSuccess: function(transport) {
+        var data = JSON.parse(transport.responseText);
+        var rowIndex = 0;
+        var table = document.createElement('table');
+        var keys = ['title', 'author', 'publisher', 'date', 'isbn'];
+        for (var i = 0; i < keys.length; i++) {
+            var k = keys[i];
+            var text = data['fields'][k];
+            if (text) {
+                var row = table.insertRow(rowIndex);
+                rowIndex++;
+                var keyCell = row.insertCell(0);
+                keyCell.innerText = k + ':';
+                keyCell.style.paddingRight = '10px';
+                var valueCell = row.insertCell(1);
+                valueCell.innerText = text[0];
+            }
+        }
+        if (rowIndex > 0) {
+            // source
+            var row = table.insertRow(rowIndex);
+            var keyCell = row.insertCell(0);
+            keyCell.innerText = 'sources:';
+            keyCell.style.paddingRight = '10px';
+            var valueCell = row.insertCell(1);
+            for (var key in data['sources']) {
+                if (valueCell.innerHTML != '')
+                    valueCell.innerHTML += ', ';
+                valueCell.innerHTML += '<a href="' + data['sources'][key] + '">' + key + '</a>';
+            }
+        }
+        else {
+            if (200 == transport.status) {
+                table.insertRow(i).insertCell(0).innerText = 'Book not found.';
+            }
+        }
+
+        $('bookinfo').update(table);
+        if (200 == transport.status) {
+            stopUpdater();
+        }
+      },
   });
 </script>
 {% endblock %}

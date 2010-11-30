@@ -27,12 +27,17 @@ def merge(dump, add):
     if merged:
         for k in add['sources'].keys():
             dump['sources'][k] = add['sources'][k]
+    if not add['providers'][0] in dump['providers']:
+        dump['providers'].append(add['providers'][0])
     return dump
 
 try:
     from google.appengine.api.urlfetch import fetch as urlfetch
     def fetch(url):
-        return urlfetch(url).content
+        try:
+            return urlfetch(url).content
+        except:
+            return ""        
 except ImportError:
     from urllib import urlopen
     def fetch(url):
