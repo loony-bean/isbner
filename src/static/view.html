@@ -8,7 +8,7 @@
     </div>
 </form>
 
-<div class="book" id="bookinfo">Waiting for data...</div>
+<div class="book" id="bookinfo">{{ message }}</div>
 
 <script>
 var updater = new Ajax.PeriodicalUpdater('', '/view/?isbn={{book.isbn}}&fields=1',

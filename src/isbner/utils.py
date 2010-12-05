@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from re import compile, sub
+import pyisbn
 
 NUMS = compile('\D')
 
@@ -10,6 +11,21 @@ def sanitize(isbn):
     0201558025
     """
     return NUMS.sub('', str(isbn))
+
+def isbn_validate(isbn):
+    """
+    >>> isbn_validate('9780262062792')
+    False
+    >>> isbn_validate('9780262062794')
+    True
+    """
+    result = False
+    try:
+        if pyisbn.Isbn(isbn).validate():
+            result = True
+    except:
+        pass
+    return result
 
 def merge(dump, add):
     """
