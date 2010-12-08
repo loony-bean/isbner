@@ -7,6 +7,7 @@ import re
 
 rx_data = re.compile('<script(?:.*?)>')
 rx_publisher = re.compile('.*?\((\d*)\)')
+rx_series = re.compile('<p>Серия: <strong>.*?</strong></p>', re.U) # cp1251
 
 class IQBuy(Adaptor):
     def __init__(self):
@@ -23,10 +24,18 @@ class IQBuy(Adaptor):
             result = dict()
             result['title'] = soup.find('h2', {'class': 'book-name'}).string
             authors = soup.find('p', {'class': 'book-author'})
-            result['author'] = authors.strong.string.replace('  ', ' ')
+            # author is optional
+            if authors.strong.string:
+                result['author'] = authors.strong.string.replace('  ', ' ')
+            # series is optional
             series = authors.findNext('p')
-            result['series'] = series.strong.string
-            publisher = series.findNext('p')
+            reg = rx_series.search(series.encode("cp1251"))
+            if reg:
+                result['series'] = series.strong.string
+                publisher = series.findNext('p')
+            else:
+                publisher = series
+            # continue with publisher
             result['publisher'] = publisher.strong.string.replace('  ', ' ').strip()
             reg = rx_publisher.search(str(publisher))
             if reg: result['date'] = reg.group(1)

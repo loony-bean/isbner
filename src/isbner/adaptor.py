@@ -21,7 +21,7 @@ class Adaptor(object):
                 'fields': dict(zip(data.keys(), 
                                    map(lambda i: (i, self._weight), 
                                        data.values()))),
-                'sources': { self._name: data['source']}
+                'sources': {self._name: data['source']}
                 }
             del data['fields']['source']
         else:

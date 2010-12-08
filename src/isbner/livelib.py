@@ -25,7 +25,7 @@ class LiveLib(Adaptor):
             result['date'] = span_info.string.replace(u' г.', '')
             span_info = span_info.nextSibling
             span_info = span_info.nextSibling
-            result['isbn'] = span_info.string.replace(u'ISBN: ', '').replace('-', '')
+            result['isbn'] = isbn #span_info.string.replace(u'ISBN: ', '').replace('-', '')
             result['source'] = url
             return result
         except:

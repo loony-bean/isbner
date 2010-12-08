@@ -14,14 +14,18 @@ import isbner
 class GetHandler(webapp.RequestHandler):
     def get(self):
         isbn = isbner.utils.sanitize(self.request.get('isbn'))
-        data = memcache.get(isbn, namespace='isbn')
-        if data is not None:
+        if not isbner.utils.isbn_validate(isbn):
+            data = isbner.stub
             self.response.set_status(200)
         else:
-            data = isbner.stub
-            for worker in isbner.names:
-                taskqueue.add(url='/worker/%s' % worker, params={'isbn': isbn})
-            self.response.set_status(204)
+            data = memcache.get(isbn, namespace='isbn')
+            if data is not None:
+                self.response.set_status(200)
+            else:
+                data = isbner.stub
+                for worker in isbner.names:
+                    taskqueue.add(url='/worker/%s' % worker, params={'isbn': isbn})
+                self.response.set_status(204)
         self.response.headers['Content-Type'] = 'application/json'
         self.response.out.write(simplejson.dumps(data))
 
@@ -33,12 +37,17 @@ class ViewHandler(webapp.RequestHandler):
             path = os.path.join(os.path.dirname(__file__), 'static', 'fields.html')
         else:
             path = os.path.join(os.path.dirname(__file__), 'static', 'view.html')
+        if not isbner.utils.isbn_validate(isbn):
+            template_values['message'] = "ISBN is not valid."
+            return self.response.out.write(template.render(path, template_values))
+        else:
+            template_values['message'] = "Waiting for data..."
         try:
             host_url = self.request.host_url
             if host_url.find('localhost') > 0:
                 host_url = 'http://localhost:8081'
             # Practice what you preach
-            data = simplejson.loads(isbner.utils.fetch('%s/get/?isbn=%s' % (host_url, isbn)))           
+            data = simplejson.loads(isbner.utils.fetch('%s/get/?isbn=%s' % (host_url, isbn)))
         except:
             pass
         else:
@@ -47,7 +56,8 @@ class ViewHandler(webapp.RequestHandler):
             keys = [k for k in keys if k in data['fields'].keys()]
             data['fields']['source'] = [', '.join(
                 ['<a href="%s">%s</a>' % (data['sources'][k], k) for k in data['sources'].keys()])]
-            keys.append('source')
+            if data['fields']['source'][0]:
+                keys.append('source')
             template_values['info'] = [{'key': k, 'value': data['fields'][k][0]} for k in keys]
         self.response.out.write(template.render(path, template_values))
 
@@ -66,8 +76,8 @@ def workers_factory():
         yield((name, AdaptorWorker))
 
 def statics_factory():
-    urls = ['/', '/terms/', '/api/', '/status/']
-    filenames = ['index.html', 'terms.html', 'api.html', 'status.html']
+    urls = ['/', '/terms/', '/api/', '/providers/']
+    filenames = ['index.html', 'terms.html', 'api.html', 'providers.html']
     for (url, filename) in zip(urls, filenames):
         class StaticHandler(webapp.RequestHandler):
             def get(self):

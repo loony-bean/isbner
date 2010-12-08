@@ -16,9 +16,9 @@ class OpenLibrary(Adaptor):
 
     def _run(self, isbn):
         url = 'http://openlibrary.org/api/books?bibkeys=ISBN:%s&jscmd=data&format=json' % isbn
-        json = simplejson.loads(fetch(url))
 
         try:
+            json = simplejson.loads(fetch(url))
             result = dict()
             json = json['ISBN:'+isbn]
             result['title'] = json['title']

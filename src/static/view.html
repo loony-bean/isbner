@@ -4,13 +4,23 @@
 
 <form action="/view/" method="get">
     <div>Enter ISBN: <input name="isbn" value="{{ book.isbn }}"/>
-    <input type="submit" value="Find"></div>
+    <input type="submit" value="Find">
+    </div>
 </form>
 
-{% if info %}
-<div class="book">
-  {% include "fields.html" %}
-</div>
-{% endif %}
+<div class="book" id="bookinfo">{{ message }}</div>
 
+<script>
+var updater = new Ajax.PeriodicalUpdater('', '/view/?isbn={{book.isbn}}&fields=1',
+  {
+    method:'get',
+    frequency: 0.25,
+    decay: 2,
+    onSuccess: function(transport) {
+      if(transport.responseText) {
+        $('bookinfo').update(transport.responseText);
+      }
+    }
+  });
+</script>
 {% endblock %}
