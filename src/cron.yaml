@@ -1,0 +1,4 @@
+cron:
+- description: status check
+  url: /status
+  schedule: every day 2:00
