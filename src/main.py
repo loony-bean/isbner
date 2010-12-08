@@ -14,7 +14,7 @@ import isbner
 class GetHandler(webapp.RequestHandler):
     def get(self):
         isbn = isbner.utils.sanitize(self.request.get('isbn'))
-        if not isbner.utils.isbn_validate(isbn):
+        if not isbner.utils.validate(isbn):
             data = isbner.stub
             self.response.set_status(200)
         else:
@@ -37,7 +37,7 @@ class ViewHandler(webapp.RequestHandler):
             path = os.path.join(os.path.dirname(__file__), 'static', 'fields.html')
         else:
             path = os.path.join(os.path.dirname(__file__), 'static', 'view.html')
-        if not isbner.utils.isbn_validate(isbn):
+        if not isbner.utils.validate(isbn):
             template_values['message'] = "ISBN is not valid."
             return self.response.out.write(template.render(path, template_values))
         else:

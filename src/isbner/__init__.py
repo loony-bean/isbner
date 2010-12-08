@@ -8,7 +8,6 @@ from labirint import Labirint
 from iqbuy import IQBuy
 from isbndb import ISBNDb
 import utils
-import pyisbn
 
 stub = Adaptor().dump('')
 classes = [LiveLib, Amazon, OpenLibrary, Labirint, IQBuy, ISBNDb]
