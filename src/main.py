@@ -44,10 +44,8 @@ class ViewHandler(webapp.RequestHandler):
         else:
             template_values['message'] = "Waiting for data..."
         try:
-            host_url = self.request.host_url
-            if host_url.find('localhost') > 0:
-                host_url = 'http://localhost:8081'
             # Practice what you preach
+            host_url = self.request.host_url.replace('8080', '8081')
             data = simplejson.loads(isbner.utils.fetch('%s/get/?isbn=%s' % (host_url, isbn)))
         except:
             pass
@@ -64,7 +62,7 @@ class ViewHandler(webapp.RequestHandler):
 
 class ProvidersHandler(webapp.RequestHandler):
     def get(self):
-        template_values = {'status': memcache.get('status')}
+        template_values = {'info': memcache.get('status')}
         path = os.path.join(os.path.dirname(__file__), 'static', 'providers.html')
         self.response.out.write(template.render(path, template_values))
 
