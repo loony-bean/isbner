@@ -3,5 +3,18 @@
 {% block content %}
 
 <h2 class="page-title">Search providers status</h2>
+<br/>
+{% if info %}
+<table>
+  {% for pair in info.items %}
+  <tr>
+    <td style="padding-right: 10px;">{{ pair.0 }}:</td>
+    <td>{{ pair.1 }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<h3>Unknown</h3>
+{% endif %}
 
 {% endblock %}

@@ -12,11 +12,11 @@ def sanitize(isbn):
     """
     return NUMS.sub('', str(isbn))
 
-def isbn_validate(isbn):
+def validate(isbn):
     """
-    >>> isbn_validate('9780262062792')
+    >>> validate('9780262062792')
     False
-    >>> isbn_validate('9780262062794')
+    >>> validate('9780262062794')
     True
     """
     result = False
