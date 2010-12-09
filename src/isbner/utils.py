@@ -27,6 +27,15 @@ def isbn_validate(isbn):
         pass
     return result
 
+def isbn10(isbn):
+    """
+    >>> isbn10('9780671657130')
+    '0671657135'
+    """
+    if len(isbn) == 13:
+        isbn = pyisbn.convert(isbn)
+    return isbn
+
 def merge(dump, add):
     """
     >>> dump = {'fields': {'publisher': ('p1', 55), 'title': ('t1', 55)}, 'sources': {'s1': 'url1'}}
@@ -52,6 +61,11 @@ try:
             return urlfetch(url).content
         except:
             return ""        
+    def getheaders(url):
+        try:
+            return urlfetch(url).headers
+        except:
+            return {}
 except ImportError:
     from urllib import urlopen
     def fetch(url):
@@ -59,3 +73,17 @@ except ImportError:
             return urlopen(url).read()
         except:
             return ""
+    def getheaders(url):
+        try:
+            headers = dict()
+            info = urlopen(url).info()
+            for i in info:
+                headers[i] = info[i]
+            return headers
+        except:
+            return {}
+
+def content_length(url):
+    headers = getheaders(url)
+    if 'content-length' in headers:
+        return int(headers['content-length'])
