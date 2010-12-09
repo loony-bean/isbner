@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from adaptor import Adaptor
-from utils import isbn10
 from utils import content_length
 import pyisbn
 

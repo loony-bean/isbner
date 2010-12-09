@@ -85,5 +85,5 @@ except ImportError:
 
 def content_length(url):
     hdrs = headers(url)
-    if 'content-length' in headers:
-        return int(headers['content-length'])
+    if 'content-length' in hdrs:
+        return int(hdrs['content-length'])
