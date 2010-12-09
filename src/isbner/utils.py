@@ -27,15 +27,6 @@ def validate(isbn):
         pass
     return result
 
-def isbn10(isbn):
-    """
-    >>> isbn10('9780671657130')
-    '0671657135'
-    """
-    if len(isbn) == 13:
-        isbn = pyisbn.convert(isbn)
-    return isbn
-
 def merge(dump, add):
     """
     >>> dump = {'fields': {'publisher': ('p1', 55), 'title': ('t1', 55)}, 'sources': {'s1': 'url1'}}
