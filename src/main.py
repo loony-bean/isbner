@@ -50,9 +50,15 @@ class ViewHandler(webapp.RequestHandler):
         except:
             pass
         else:
+            # cover photo
+            if 'photo' in data['fields']:
+                template_values['photo'] = data['fields']['photo'][0]
+                del data['fields']['photo']
+            # data fields
             fields = ['title', 'author', 'publisher', 'date', 'isbn']
             keys = fields + list(set(data['fields'].keys()) - set(fields))
             keys = [k for k in keys if k in data['fields'].keys()]
+            # sources
             data['fields']['source'] = [', '.join(
                 ['<a href="%s">%s</a>' % (data['sources'][k], k) for k in data['sources'].keys()])]
             if data['fields']['source'][0]:
