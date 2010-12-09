@@ -12,7 +12,7 @@ class OpenLibrary(Adaptor):
     def __init__(self):
         self._name = 'OpenLibrary'
         self._url = 'http://openlibrary.org/'
-        self._weight = 50
+        self._weight = 55
 
     def _run(self, isbn):
         url = 'http://openlibrary.org/api/books?bibkeys=ISBN:%s&jscmd=data&format=json' % isbn
@@ -27,6 +27,8 @@ class OpenLibrary(Adaptor):
             result['publisher'] = ', '.join([i['name'] for i in json['publishers']])
             result['date'] = json['publish_date']
             result['source'] = json['url']
+            if 'cover' in json:
+                result['photo'] = json['cover']['medium']
             return result
         except:
             return None
@@ -38,6 +40,7 @@ class OpenLibrary(Adaptor):
             'isbn': u'0201558025',
             'publisher': u'Addison-Wesley',
             'date': u'1994',
+            'photo': u'http://covers.openlibrary.org/b/id/135182-M.jpg',
             'source': u'http://openlibrary.org/books/OL1429049M/Concrete_mathematics'}
 
 if __name__ == '__main__':

@@ -41,6 +41,7 @@ class IQBuy(Adaptor):
             if reg: result['date'] = reg.group(1)
             result['source'] = url
             result['isbn'] = isbn
+            result['photo'] = soup.find('td', {'class': 'book-image'}).p.img['src']
             return result
         except:
             return None
@@ -51,8 +52,9 @@ class IQBuy(Adaptor):
             'author': u'Илья Ильф, Евгений Петров',
             'series': u'Библиотека великих писателей. Брокгауз - Ефрон',
             'publisher': u'Издательство ЭКСМО',
-            'date': u'2008',
+            'date': u'2010',
             'isbn': u'9785699306985',
+            'photo': u'http://books.iqbuy.ru/img/books/9785/69/93/06/98/9785699306985-1-4773782.jpg',
             'source': 'http://books.iqbuy.ru/categories_offer/9785699306985'}
 
 if __name__ == '__main__':

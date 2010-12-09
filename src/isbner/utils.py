@@ -61,7 +61,7 @@ try:
             return urlfetch(url).content
         except:
             return ""        
-    def getheaders(url):
+    def headers(url):
         try:
             return urlfetch(url).headers
         except:
@@ -73,7 +73,7 @@ except ImportError:
             return urlopen(url).read()
         except:
             return ""
-    def getheaders(url):
+    def headers(url):
         try:
             headers = dict()
             info = urlopen(url).info()
@@ -84,6 +84,6 @@ except ImportError:
             return {}
 
 def content_length(url):
-    headers = getheaders(url)
+    hdrs = headers(url)
     if 'content-length' in headers:
         return int(headers['content-length'])
