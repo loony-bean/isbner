@@ -1,14 +1,23 @@
 {% if info %}
     <div class="book">
       <table>
-        {% for pair in info %}
-          {% if pair.value %}
-          <tr>
-            <td style="padding-right: 10px;">{{ pair.key }}:</td>
-            <td>{{ pair.value }}</td>
-          </tr>
+        <tr>
+          {% if photo %}
+            <td class="cover">
+                <img src="{{ photo }}">
+            </td>
           {% endif %}
-        {% endfor %}
+            <td><table>
+            {% for pair in info %}
+              {% if pair.value %}
+              <tr>
+                <td style="padding-right:12px;">{{ pair.key }}:</td>
+                <td>{{ pair.value }}</td>
+              </tr>
+              {% endif %}
+            {% endfor %}
+            </table></td>
+        </tr>
       </table>
     </div>
 {% endif %}

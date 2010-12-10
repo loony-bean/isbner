@@ -27,6 +27,7 @@ class LiveLib(Adaptor):
             span_info = span_info.nextSibling
             result['isbn'] = isbn #span_info.string.replace(u'ISBN: ', '').replace('-', '')
             result['source'] = url
+            result['photo'] = soup.find('div', {'class': 'thumbnail'}).a.img['src'].replace('/s/','/l/') # small size -> large
             return result
         except:
             return None
@@ -37,7 +38,8 @@ class LiveLib(Adaptor):
             'author': u'Бертран Рассел',
             'publisher': u'Сибирское университетское издательство',
             'date': u'2007',
-            'isbn': u'9785379003067, 5379003060',
+            'isbn': u'9785379003067',
+            'photo': u'http://i.livelib.ru/boocover/1000444518/l/e193/Bertran_Rassel__Vvedenie_v_matematicheskuyu_filosofiyu.gif',
             'source': u'http://www.livelib.ru/find/9785379003067'}
 
 if __name__ == '__main__':

@@ -52,6 +52,11 @@ try:
             return urlfetch(url).content
         except:
             return ""        
+    def headers(url):
+        try:
+            return urlfetch(url).headers
+        except:
+            return {}
 except ImportError:
     from urllib import urlopen
     def fetch(url):
@@ -59,3 +64,17 @@ except ImportError:
             return urlopen(url).read()
         except:
             return ""
+    def headers(url):
+        try:
+            headers = dict()
+            info = urlopen(url).info()
+            for i in info:
+                headers[i] = info[i]
+            return headers
+        except:
+            return {}
+
+def content_length(url):
+    hdrs = headers(url)
+    if 'content-length' in hdrs:
+        return int(hdrs['content-length'])
