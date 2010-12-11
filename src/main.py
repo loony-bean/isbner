@@ -40,9 +40,10 @@ class ViewHandler(webapp.RequestHandler):
         else:
             if 'photo' in data['fields']:
                 template_values['photo'] = data['fields']['photo'][0]
-            fields = ['title', 'author', 'publisher', 'date', 'isbn']
-            keys = fields + list(set(data['fields'].keys()) - set(fields) - set(['photo']))
-            keys = [k for k in keys if k in data['fields'].keys()]
+            keys = ['title', 'author', 'publisher', 'date', 'isbn']
+            keys = keys + filter(lambda k: k not in keys, data['fields'].keys())
+            keys = filter(data['fields'].has_key, keys)
+            keys.remove('photo')
             data['fields']['source'] = [', '.join(
                 ['<a href="%s">%s</a>' % (data['sources'][k], k) for k in data['sources'].keys()])]
             if data['fields']['source'][0]:
