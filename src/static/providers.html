@@ -8,7 +8,12 @@
 <table>
   {% for pair in info.items %}
   <tr>
-    <td style="padding-right: 10px;">{{ pair.0 }}:</td> <td>{{ pair.1 }}</td>
+    <td style="padding-right: 10px;">{{ pair.0 }}:</td>
+    {% if pair.1 %}
+    <td><img src="/img/status_good.gif"></td>
+    {% else %}
+    <td><img src="/img/status_alert.gif"></td>
+    {% endif %}
   </tr>
   {% endfor %}
 </table>
