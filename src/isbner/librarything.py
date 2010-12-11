@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from adaptor import Adaptor
-from utils import content_length
-import pyisbn
+from utils import headers
 
 class LibraryThing(Adaptor):
     def __init__(self):
@@ -11,18 +10,15 @@ class LibraryThing(Adaptor):
         self._weight = 50
 
     def _run(self, isbn):
-        try:
-            # This dev key belongs to LibraryThing
-            url = 'http://www.librarything.com/devkey/3f8ba261818a718f42e1c94df68f48b8/large/isbn/%s' % isbn
-            if content_length(url) > 100:
-                result = dict()
-                result['isbn'] = isbn
-                result['photo'] = url
-                result['source'] = "http://www.librarything.com/search.php?search=%s" % isbn
-                return result
-            else:
-                return None
-        except:
+        # This dev key belongs to LibraryThing
+        url = 'http://www.librarything.com/devkey/3f8ba261818a718f42e1c94df68f48b8/large/isbn/%s' % isbn
+        if int(headers(url).get('content-length', 0)) > 100:
+            result = dict()
+            result['isbn'] = isbn
+            result['photo'] = url
+            result['source'] = "http://www.librarything.com/search.php?search=%s" % isbn
+            return result
+        else:
             return None
 
     def check(self):
