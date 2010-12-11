@@ -7,16 +7,13 @@
         <img src="{{ photo }}">
       </td>
       {% endif %}
-      <td><table>
-          {% for pair in info %}
-          {% if pair.value %}
-          <tr>
-            <td style="padding-right:12px;">{{ pair.key }}:</td>
-            <td>{{ pair.value }}</td>
-          </tr>
-          {% endif %}
-          {% endfor %}
-      </table></td>
+      <td>
+	<table>
+	  {% for pair in info %}
+          <tr><td style="padding-right:12px;">{{ pair.0 }}:</td> <td>{{ pair.1 }}</td></tr>
+	  {% endfor %}
+	</table>
+      </td>
     </tr>
   </table>
 </div>

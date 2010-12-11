@@ -13,8 +13,8 @@
 <script>
 var updater = new Ajax.PeriodicalUpdater('', '/view/?isbn={{book.isbn}}&fields=1',
   {
-    method:'get',
-    frequency: 0.25,
+    method: 'get',
+    frequency: 0.5,
     decay: 2,
     onSuccess: function(transport) {
       if(transport.responseText) {
