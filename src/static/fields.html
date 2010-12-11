@@ -1,23 +1,26 @@
 {% if info %}
-    <div class="book">
-      <table>
-        <tr>
-          {% if photo %}
-            <td class="cover">
-                <img src="{{ photo }}">
-            </td>
+<div class="book">
+  <table>
+    <tr>
+      {% if photo %}
+      <td class="cover">
+        <img src="{{ photo }}">
+      </td>
+      {% endif %}
+      <td><table>
+          {% for pair in info %}
+          {% if pair.value %}
+          <tr>
+            <td style="padding-right:12px;">{{ pair.key }}:</td>
+            <td>{{ pair.value }}</td>
+          </tr>
           {% endif %}
-            <td><table>
-            {% for pair in info %}
-              {% if pair.value %}
-              <tr>
-                <td style="padding-right:12px;">{{ pair.key }}:</td>
-                <td>{{ pair.value }}</td>
-              </tr>
-              {% endif %}
-            {% endfor %}
-            </table></td>
-        </tr>
-      </table>
-    </div>
+          {% endfor %}
+      </table></td>
+    </tr>
+  </table>
+</div>
+{% else %}
+<br/>
+ISBN is not valid.
 {% endif %}
