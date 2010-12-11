@@ -38,20 +38,16 @@ class ViewHandler(webapp.RequestHandler):
         except:
             pass
         else:
-            # cover photo
             if 'photo' in data['fields']:
                 template_values['photo'] = data['fields']['photo'][0]
-                del data['fields']['photo']
-            # data fields
             fields = ['title', 'author', 'publisher', 'date', 'isbn']
-            keys = fields + list(set(data['fields'].keys()) - set(fields))
+            keys = fields + list(set(data['fields'].keys()) - set(fields) - set(['photo']))
             keys = [k for k in keys if k in data['fields'].keys()]
-            # sources
             data['fields']['source'] = [', '.join(
                 ['<a href="%s">%s</a>' % (data['sources'][k], k) for k in data['sources'].keys()])]
             if data['fields']['source'][0]:
                 keys.append('source')
-            template_values['info'] = [{'key': k, 'value': data['fields'][k][0]} for k in keys]
+            template_values['info'] = [(k, data['fields'][k][0]) for k in keys]
 
         path = 'fields.html' if self.request.get('fields') else 'view.html'
         path = os.path.join(os.path.dirname(__file__), 'static', path)
