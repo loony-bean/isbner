@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import logging
-import os
+import logging, sys, os
 from google.appengine.api import taskqueue
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
@@ -14,35 +13,24 @@ import isbner
 class GetHandler(webapp.RequestHandler):
     def get(self):
         isbn = isbner.utils.sanitize(self.request.get('isbn'))
-        if not isbner.utils.validate(isbn):
-            data = isbner.stub
-            self.response.set_status(200)
+        if not isbn:
+            self.response.set_status(404)
         else:
             data = memcache.get(isbn, namespace='isbn')
-            if data is not None:
-                self.response.set_status(200)
-            else:
+            if not data:
+                self.response.set_status(204)
                 data = isbner.stub
                 for worker in isbner.names:
                     taskqueue.add(url='/worker/%s' % worker, params={'isbn': isbn})
-                self.response.set_status(204)
-        self.response.headers['Content-Type'] = 'application/json'
-        self.response.out.write(simplejson.dumps(data))
+            else:
+                self.response.set_status(200)
+            self.response.headers['Content-Type'] = 'application/json'
+            self.response.out.write(simplejson.dumps(data))
 
 class ViewHandler(webapp.RequestHandler):
-    # TODO: Looks horrible enough to be refactored
     def get(self):
-        isbn = isbner.utils.sanitize(self.request.get('isbn'))
+        isbn = self.request.get('isbn')
         template_values = {'book': {'isbn': isbn}}
-        if self.request.get('fields'):
-            path = os.path.join(os.path.dirname(__file__), 'static', 'fields.html')
-        else:
-            path = os.path.join(os.path.dirname(__file__), 'static', 'view.html')
-        if not isbner.utils.validate(isbn):
-            template_values['message'] = "ISBN is not valid."
-            return self.response.out.write(template.render(path, template_values))
-        else:
-            template_values['message'] = "Waiting for data..."
         try:
             # Practice what you preach
             host_url = self.request.host_url.replace('8080', '8081')
@@ -64,7 +52,11 @@ class ViewHandler(webapp.RequestHandler):
             if data['fields']['source'][0]:
                 keys.append('source')
             template_values['info'] = [{'key': k, 'value': data['fields'][k][0]} for k in keys]
-        self.response.out.write(template.render(path, template_values))
+
+        path = 'fields.html' if self.request.get('fields') else 'view.html'
+        path = os.path.join(os.path.dirname(__file__), 'static', path)
+        result = template.render(path, template_values)
+        self.response.out.write(result)
 
 class ProvidersHandler(webapp.RequestHandler):
     def get(self):
