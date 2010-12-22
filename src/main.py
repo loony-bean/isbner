@@ -93,8 +93,8 @@ def workers_factory():
         yield((name, AdaptorWorker))
 
 def statics_factory():
-    urls = ['/', '/terms/', '/api/']
-    filenames = ['index.html', 'terms.html', 'api.html']
+    urls = ['/', '/terms/', '/api/', '/opensearch-description.xml']
+    filenames = ['index.html', 'terms.html', 'api.html', 'opensearch-description.xml']
     for (url, filename) in zip(urls, filenames):
         class StaticHandler(webapp.RequestHandler):
             def get(self):
