@@ -125,6 +125,11 @@ ul.plain-list {
 
 /* Feed */
 
+a.twitter {
+	background: url('../img/twitter.png') no-repeat left center;
+	padding-left: 18px;
+}
+
 a.feed {
 	background: url('../img/icon-feed.gif') no-repeat left center;
 	padding-left: 18px;
