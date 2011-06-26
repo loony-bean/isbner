@@ -5,9 +5,9 @@ from utils import fetch
 from BeautifulSoup import BeautifulSoup
 import re
 
-rx_data = re.compile('<script(?:.*?)>')
-rx_publisher = re.compile('.*?\((\d*)\)')
-rx_series = re.compile('<p>�����: <strong>.*?</strong></p>', re.U) # cp1251
+rx_data = re.compile(u'<script(?:.*?)>', re.U)
+rx_publisher = re.compile(u'.*?\((\d*)\)', re.U)
+rx_series = re.compile(u'<p>Серия: <strong>.*?</strong></p>', re.U)
 
 class IQBuy(Adaptor):
     def __init__(self):
@@ -17,7 +17,7 @@ class IQBuy(Adaptor):
 
     def _run(self, isbn):
         url = 'http://books.iqbuy.ru/categories_offer/%s' % (isbn)
-        data = rx_data.sub('', fetch(url))
+        data = rx_data.sub('', fetch(url).decode('cp1251'))
         soup = BeautifulSoup(data)
 
         try:
@@ -29,7 +29,7 @@ class IQBuy(Adaptor):
                 result['author'] = authors.strong.string.replace('  ', ' ')
             # series is optional
             series = authors.findNext('p')
-            reg = rx_series.search(series.encode("cp1251"))
+            reg = rx_series.search(unicode(series))
             if reg:
                 result['series'] = series.strong.string
                 publisher = series.findNext('p')
@@ -48,13 +48,13 @@ class IQBuy(Adaptor):
 
     def check(self):
         return self._run('9785699306985') == {
-            'title': u'12 стульев. Золотой теленок (подарочное издание)',
+            'title': u'Двенадцать стульев. Золотой теленок',
             'author': u'Илья Ильф, Евгений Петров',
             'series': u'Библиотека великих писателей. Брокгауз - Ефрон',
             'publisher': u'Издательство ЭКСМО',
-            'date': u'2010',
+            'date': u'2008',
             'isbn': u'9785699306985',
-            'photo': u'http://books.iqbuy.ru/img/books/9785/69/93/06/98/9785699306985-1-4773782.jpg',
+            'photo': u'http://books.iqbuy.ru/img/books/9785/69/93/06/98/9785699306985-b.jpg',
             'source': 'http://books.iqbuy.ru/categories_offer/9785699306985'}
 
 if __name__ == '__main__':

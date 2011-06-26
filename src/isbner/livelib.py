@@ -39,7 +39,7 @@ class LiveLib(Adaptor):
             'publisher': u'Сибирское университетское издательство',
             'date': u'2007',
             'isbn': u'9785379003067',
-            'photo': u'http://i.livelib.ru/boocover/1000444518/l/e193/Bertran_Rassel__Vvedenie_v_matematicheskuyu_filosofiyu.gif',
+            'photo': u'http://j.livelib.ru/boocover/1000444518/l/e193/Bertran_Rassel__Vvedenie_v_matematicheskuyu_filosofiyu.gif',
             'source': u'http://www.livelib.ru/find/9785379003067'}
 
 if __name__ == '__main__':
