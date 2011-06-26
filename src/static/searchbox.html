@@ -1,0 +1,5 @@
+<form action="/view/" method="get">
+    <div>Enter ISBN: <input name="isbn" value="{{ book.isbn }}"/>{% if book.format %}<input name="format" type="hidden" value="{{ book.format }}"/>{% endif %}
+    <input type="submit" value="Find">
+    </div>
+</form>

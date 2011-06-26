@@ -42,7 +42,7 @@ try:
         try:
             return urlfetch(url).content
         except:
-            return ""        
+            return ""
     def headers(url):
         try:
             return urlfetch(url).headers

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import logging, sys, os
+#from google.appengine.dist import use_library; use_library('django', '1.2')
 from google.appengine.api import taskqueue
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
@@ -13,6 +14,7 @@ import isbner
 class GetHandler(webapp.RequestHandler):
     def get(self):
         isbn = isbner.utils.sanitize(self.request.get('isbn'))
+        format = self.request.get('format')
         if not isbn:
             self.response.set_status(404)
         else:
@@ -24,30 +26,40 @@ class GetHandler(webapp.RequestHandler):
                     taskqueue.add(url='/worker/%s' % worker, params={'isbn': isbn})
             else:
                 self.response.set_status(200)
+            data = isbner.formats.markup(format, data)
             self.response.headers['Content-Type'] = 'application/json'
             self.response.out.write(simplejson.dumps(data))
 
 class ViewHandler(webapp.RequestHandler):
     def get(self):
         isbn = self.request.get('isbn')
-        template_values = {'book': {'isbn': isbn}}
+        format = self.request.get('format') or 'raw'
+        template_values = {'book': {'isbn': isbn, 'format': format}}
         try:
             # Practice what you preach
             host_url = self.request.host_url.replace('8080', '8081')
-            data = simplejson.loads(isbner.utils.fetch('%s/get/?isbn=%s' % (host_url, isbn)))
+            data = simplejson.loads(isbner.utils.fetch('%s/get/?isbn=%s&format=%s' % (host_url, isbn, format)))
         except:
             pass
         else:
-            if 'photo' in data['fields']:
-                template_values['photo'] = data['fields'].pop('photo')[0]
-            keys = ['title', 'author', 'publisher', 'date', 'isbn']
-            keys = keys + filter(lambda k: k not in keys, data['fields'].keys())
-            keys = filter(data['fields'].has_key, keys)
-            data['fields']['source'] = [', '.join(
-                ['<a href="%s">%s</a>' % (data['sources'][k], k) for k in data['sources'].keys()])]
-            if data['fields']['source'][0]:
-                keys.append('source')
-            template_values['info'] = [(k, data['fields'][k][0]) for k in keys]
+            formats = list()
+            for name in isbner.formats.valid:
+                if name != format:
+                    formats.append('<a href = "/view/?isbn=%(isbn)s&format=%(format)s">%(format)s</a>' % {'format': name, 'isbn': isbn})
+                else:
+                    formats.append(name)
+            template_values['formats'] = ', '.join(formats)
+
+            if format == 'json':
+                template_values['json'] = data
+            else:
+                for field in ('photo', 'schema'):
+                    if field in data: template_values[field] = data.pop(field)
+                data['format'] = format
+                template_values['info'] = isbner.formats.ordered_pairs(data)
+                html = os.path.join(os.path.dirname(__file__), 'static', 'fields.html')
+                src = template.render(html, template_values)
+                template_values['html'] = isbner.formats.truncate_urls(src)
 
         path = 'fields.html' if self.request.get('fields') else 'view.html'
         path = os.path.join(os.path.dirname(__file__), 'static', path)
@@ -76,7 +88,7 @@ def workers_factory():
 
             def run(self, isbn):
                 isbn = isbner.utils.sanitize(isbn)
-                data = self.adaptor.dump(isbn)                
+                data = self.adaptor.dump(isbn)
                 cached = memcache.get(isbn, namespace='isbn')
                 if cached is not None:
                     data = isbner.utils.merge(cached, data)
@@ -98,8 +110,19 @@ def statics_factory():
     for (url, filename) in zip(urls, filenames):
         class StaticHandler(webapp.RequestHandler):
             def get(self):
+                demo = dict()
+                if self.name == 'index.html':
+                    json = open('static/demo.js').read()
+                    data = simplejson.loads(json)
+                    for format in isbner.formats.valid:
+                        marked = isbner.formats.markup(format, data)
+                        html = os.path.join(os.path.dirname(__file__), 'static', 'demo.html')
+                        src = template.render(html, {'book': marked})
+                        marked['html'] = isbner.formats.truncate_urls(src)
+                        demo[format] = template.render(html, {'book': marked})
+                    demo['json'] = isbner.formats.truncate_urls(json)
                 path = os.path.join(os.path.dirname(__file__), 'static', self.name)
-                self.response.out.write(template.render(path, {}))
+                self.response.out.write(template.render(path, {'book': demo}))
             name = filename
         yield((url, StaticHandler))
 

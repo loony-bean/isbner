@@ -7,15 +7,19 @@
     <meta name="keywords" content="" />
     <meta name="author" content="" />
     <link rel="stylesheet" type="text/css" href="/css/style.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/css/prettify.css" media="screen" />
     <link rel="search"
         type="application/opensearchdescription+xml" 
         href="http://www.isbner.org/opensearch-description.xml"
         title="Isbner book search" />
     {% block opensearch %}{% endblock %}
-    <script type='text/javascript' src='http://www.google.com/jsapi'></script>
-    <script type='text/javascript'>
+    <script type="text/javascript" src="/js/prettify.js"></script>
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript">
         google.load("prototype", "1.7.0.0");
     </script>
+    <script type="text/javascript" src="/js/livepipe.js"></script>
+    <script type="text/javascript" src="/js/tabs.js"></script>
     <title>Isbner</title>
     <script type="text/javascript">
       var _gaq = _gaq || [];
@@ -30,7 +34,7 @@
     </script>
 </head>
 
-<body id="top">
+<body id="top" onload="prettyPrint()">
 
 <div class="container">
 

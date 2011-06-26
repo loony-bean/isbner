@@ -1,21 +1,17 @@
-{% if info %}
-<div class="book">
+{% if info or json %}<div class="book">{% if header %}<div {{ header }}>{% endif %}{% if json %}
+<textarea rows="10">{{ json }}</textarea>{% else %}
   <table>
     <tr>
-      {% if photo %}
-      <td class="cover">
-        <img src="{{ photo }}">
-      </td>
-      {% endif %}
-      <td>
-	<table>
-	  {% for pair in info %}
-          <tr><td style="padding-right:12px;">{{ pair.0 }}:</td> <td>{{ pair.1 }}</td></tr>
-	  {% endfor %}
-	</table>
+      {% if photo %}<td class="cover">{{ photo }}</td>{% endif %}
+      <td>  
+	    <table>
+	    {% for pair in info %}<tr><td class=field>{{ pair.0 }}:</td> <td>{{ pair.1 }}</td></tr>{% endfor %}
+	    </table>
       </td>
     </tr>
-  </table>
+  {% endif %}
+  </table>{% if header %}</div>{% endif %}
+  <p><h3>Available in formats</h3>{{formats}}</p>
 </div>
 {% else %}
 <br/>

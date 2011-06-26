@@ -1,121 +1,107 @@
 body
 {
 	background-color: white;
+	font-size: 12pt;
 	color: black;
 }
 
 body, h1, h2, h3, ol, ul, li, p, small
 {
-	margin:0;
-	padding:0;
+	margin: 0;
+	padding: 0;
+	font-weight: normal;
 }
 
 .container {
-	/*border: 2px solid #D7D7D2;*/
-	background: #FFF;
 	margin: 0 auto;
-	padding: 10px;
 	width: 800px;
 }
 
+.title { padding: 0.5em 0 0.5em 0 }
 .title a { text-decoration: none; color: black; }
-.title { padding: 4pt; }
-
-.title h1
-{
-	margin-left: 3pt;
- 	margin-top: 3pt;
- 	padding: 3pt;
-}
 
 .title hr
 {
- 	height: 1.5pt;
+ 	height: 2px;
  	width: 100%;
  	background-color: Coral;
- 	color: red;
+	border-width: 0;
 }
 
-.cover { padding-right: 24px; }
+.cover, .coversmall { padding-right: 1em; }
 .cover img { width: 140px; }
+.coversmall img { height: 70px; }
+
+.field {
+    padding-right: 1em;
+}
 
 td { vertical-align: top; }
 
-h1, h2 { font-weight: normal; }
+p { padding-bottom: .5em; }
 
-h2
-{
-	font-size: 15pt;
- 	margin-top: 6pt;
- 	margin-bottom: 2pt;
+h1 { font-size: 2em; }
+
+h2 {
+	font-size: 1.25em;
+ 	padding-top: .5em;
 }
 
-h3
-{
-	font-size: 11.3pt;
+h3 {
+    font-size: 1em;
+    color: #707070;
 }
 
-hr
-{
-	height: 1px;
-	border-width: 0;
-	background-color: black;
+em { color: darkblue; }
+.quiet { color: #999; }
+
+pre, code { font-size: .7em; }
+
+code ul {
+	list-style: none;
+    margin-left: 0;
 }
 
-.main {
-    margin: 0px 10px;
+code li {
+    margin-left: 0;
 }
 
-.book
-{
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
+.cell {
+    display: table-cell;
+    vertical-align: top;
+}
+    
+a:hover {
+	color: black;
+}
+
+.book {
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    border-radius: 1em;
     background-color: GhostWhite;
     border: 1px solid Silver;
-    padding: 8px 12px;
-    margin-top: 6pt;
+    padding: .75em 1em;
+    margin-top: .5em;
 }
 
-.quiet {color: #999;}
+ol, ul, li {
+	margin-left: 1em;
+}
 
-.content
+textarea
 {
-    padding: 10px;
+    background-color: GhostWhite;
+    border-width: 0px;
+    width: 100%;
 }
 
-.content ol, .content ul, .content ol, .content ul
-{
-	margin-left: 20pt;
-}
+/* Floats */
 
-.rss img
-{
-    vertical-align: middle;
-    padding-bottom: 3pt;
-    border-style: none;
-}
+.left { float: left; }
+.right { float: right; }
 
-.title img
-{
-    vertical-align: middle;
-    padding-bottom: 3pt;
-    border-style: none;
-}
-
-/* Lists */
-
-ul.plain-list {
-    margin: 0;
-    list-style: none;
-}
-
-/* Floats */   
-
-.left,.alignleft {float: left;}
-.right,.alignright {float: right;}
-
-.clear,.clearer {clear: both;}
+.clear, .clearer { clear: both; }
 .clearer {
 	display: block;
 	font-size: 0;
@@ -123,70 +109,63 @@ ul.plain-list {
 	height: 0;
 }
 
-/* Feed */
-
-a.twitter {
-	background: url('../img/twitter.png') no-repeat left center;
-	padding-left: 18px;
-}
-
-a.feed {
-	background: url('../img/icon-feed.gif') no-repeat left center;
-	padding-left: 18px;
-}
-
-a.rdf {
-	background: url('../img/icon-rdf.png') no-repeat left center;
-	padding-left: 18px;
-}
-
-a.microformat {
-	background: url('../img/icon-microformats.png') no-repeat left center;
-	padding-left: 18px;
-}
-
-/* Dashboard */
-
-#dashboard {
-	border: 1px solid #E7E7E7;
-    margin-top: 30px;
-	font-size: 0.9em;
-}
-
-#dashboard .column {
-    /*width: 25%;*/
-    padding: 0px 6px;
-}
-
-#dashboard .column-content {
-	padding: 14px 16px;
-}
-#dashboard .column-title {
-	color: #666;
-	font-size: 1.0em;
-	font-weight: bold;
-	padding-bottom: 5px;
-}
-#dashboard a {color: #456;}
-#dashboard a:hover {color: #000;}
-
 /* Footer */
 
-#footer {
-	font-size: 0.9em;
-    padding: 10px 10px;
+.footer {
+	font-size: .9em;
+    padding: .75em;
 }
 
-#footer a {
+.footer a {
 	color: #579;
 	text-decoration: none;
 }
-#footer .right, #footer .right a {
-	color: #999;
+
+.footer a:hover {
+	color: black;
+}
+
+/* Demo tabs */
+
+div.demo div.dbody {
+    padding-left: 1em;
+}
+
+div.demo {
+	border: 1px solid lightgray;
+	padding: 1em;
+}
+
+ul.demo {
+	list-style: none;
+	margin: .5em 0 0 0;
+	padding-bottom: 2px;
+	height: 1.2em;
+}
+
+ul.demo li.tab {
+	float: left;
+	margin-right: 0.5em;
+	margin-left: 0em;
+}
+
+ul.demo li.tab a {
+	display: block;
+	padding: 0 1em 0 1em;
+	background-color: white;
 	text-decoration: none;
+	color: #579;
+	border: 1px solid lightgray;
+	background-color: #eee;
 }
-#footer .text-separator {
-	padding: 0 3px;
-	color: #BBB;
+
+ul.demo li.tab a.active {
+    background-color: white;
+    border-bottom-width: 0;
+    padding-bottom: 1px;
 }
-#footer a:hover {color: #000;}
+
+ul.demo li.tab a:hover {
+    color: black;
+}
+

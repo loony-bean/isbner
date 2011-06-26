@@ -1,0 +1,11 @@
+{% if book.json %}<div class="dbody"><code class="prettyprint">{% filter escape|linebreaksbr %}{{book.json}}{% endfilter %}</code></div>
+{% else %}{% if book %}<div {{ book.schema }}>
+<div class="coversmall cell">{{book.photo}}</div>
+<div class="cell">{{book.title}}
+by {{book.author}},
+published by {{book.publisher}}
+on {{book.date}},
+ISBN: {{book.isbn}}
+&mdash; {{book.sources}}.</div>
+</div>{% if book.html %}
+<p><h3>HTML Source</h3><div class="dbody"><code class="prettyprint">{% filter escape|linebreaksbr %}{{ book.html }}{% endfilter %}</code></div></p>{% endif %}{% endif %}{% endif %}

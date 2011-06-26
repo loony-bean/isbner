@@ -9,6 +9,7 @@ from iqbuy import IQBuy
 from isbndb import ISBNDb
 from librarything import LibraryThing
 import utils
+import formats
 
 stub = Adaptor().dump('')
 classes = [LiveLib, Amazon, OpenLibrary, Labirint, IQBuy, ISBNDb, LibraryThing]
