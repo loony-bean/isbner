@@ -45,9 +45,8 @@ class ViewHandler(webapp.RequestHandler):
             formats = list()
             for name in isbner.formats.valid:
                 if name != format:
-                    formats.append('<a href = "/view/?isbn=%(isbn)s&format=%(format)s">%(format)s</a>' % {'format': name, 'isbn': isbn})
-                else:
-                    formats.append(name)
+                    formats.append('<a target=_blank href = "%(host)s/get/?isbn=%(isbn)s&format=%(format)s">%(format)s</a>' % \
+                        {'host': host_url, 'format': name, 'isbn': isbn})
             template_values['formats'] = ', '.join(formats)
 
             if format == 'json':
@@ -55,7 +54,6 @@ class ViewHandler(webapp.RequestHandler):
             else:
                 for field in ('photo', 'schema'):
                     if field in data: template_values[field] = data.pop(field)
-                data['format'] = format
                 template_values['info'] = isbner.formats.ordered_pairs(data)
                 html = os.path.join(os.path.dirname(__file__), 'static', 'fields.html')
                 src = template.render(html, template_values)
