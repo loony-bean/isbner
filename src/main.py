@@ -40,7 +40,7 @@ class ViewHandler(webapp.RequestHandler):
             host_url = self.request.host_url.replace('8080', '8081')
             data = simplejson.loads(isbner.utils.fetch('%s/get/?isbn=%s&format=%s' % (host_url, isbn, format)))
         except:
-            pass
+            self.response.set_status(404)
         else:
             formats = list()
             for name in isbner.formats.valid:
