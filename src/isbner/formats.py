@@ -50,7 +50,6 @@ def markup(format, raw):
                 data[k] = '<img src="%s" />' % data[k]
             elif k == 'sources':
                 data[k] = ', '.join('<a href="%s">%s</a>' % (url, name) for name, url in data[k])
-                if not data[k]: del data[k]
     elif format == 'json':
         pass
     else:
@@ -78,7 +77,7 @@ def prepare(raw):
     result = dict()
     for k in raw['fields']:
         result[k] = raw['fields'][k][0]
-    if ['sources']:
+    if 'sources' in raw and raw['sources']:
         result['sources'] = [(k, raw['sources'][k]) for k in raw['sources']]
     return result
 
