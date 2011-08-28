@@ -1,0 +1,32 @@
+{%- macro html(book) -%}
+{%- autoescape False -%}
+<div {{ book.schema }}>
+	<div class="coversmall cell">{{book.photo}}</div>
+	<div class="cell">{{book.title}}
+	by {{book.author}},
+	published by {{book.publisher}}
+	on {{book.date}},
+	ISBN: {{book.isbn}}
+	&mdash; {{book.sources}}.</div>
+</div>
+{%- endautoescape -%}
+{%- endmacro%}
+
+{%- macro view(book) -%}
+{%- if book.json -%}
+	<div class="dbody"><code class="prettyprint">
+		{{book.json|truncate_urls|linebreakbr|safe}}
+	</code></div>
+{%- else -%}
+	{%- if book -%}
+	{{ html(book)|safe }}
+	<p><h3>HTML Source</h3>
+		<div class="dbody">
+			<code class="prettyprint">
+				{{ html(book)|truncate_urls|forceescape|linebreakbr|safe }}
+			</code>
+		</div>
+	</p>
+	{%- endif -%}
+{%- endif -%}
+{%- endmacro -%}

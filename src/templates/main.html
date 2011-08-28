@@ -1,0 +1,62 @@
+{% include "searchbox.html" %}
+
+<h2 class="page-title">About</h2>
+
+<p>For decades, <a href="http://en.wikipedia.org/wiki/ISBN" target="_blank">ISBN</a> 
+served as unique book identifier. Nowadays searching Web for books 
+or creating references for your library, rarely you will find a software program or Web 
+service that does not search for book information by ISBN code.</p>
+
+<p>In the Web there are many providers of such information. Each of them uses it's own 
+manner of presentation and own data model. It can even happen that some piece of basic 
+information about a book (like title or publication date) can have different values obtained 
+from different sources. Also, not all Web sources provide a way to obtain information
+programmatically, but using Isbner <a href="/api/">API</a> it is possible to query the
+data they store.</p>
+
+<p>This service utilizes the idea of aggregated search. This means that the information 
+from different sources is analized, weighted and aggregated into unified data package. This 
+allows Isbner to provide users with more qualitative search results.</p>
+
+<p>The other idea behind the project is to propagate
+<a href="http://en.wikipedia.org/wiki/Semantic_Web" target="_blank">semantic markup</a> 
+for embedding book information within Web documents. There is a variety of formats available, 
+and no one seems to be dominating now. You can see an example of how Isbner can present book 
+information in the table below.</p>
+
+<ul id="demotabs" class="demo">
+    <li class="tab"><a href="#schema">Schema</a></li>
+    <li class="tab"><a href="#rdfa">RDFa</a></li>
+    <li class="tab"><a href="#microformats">Microformats</a></li>
+    <li class="tab"><a href="#json">JSON</a></li>
+</ul>
+
+<div class="demo">
+
+{% from 'demo.html' import view %}
+<div id="schema">
+    <p>Is a collective effort of major search providers, providing HTML5 Microdata markup schemas for web content.</p>
+    <h3><a href='http://schema.org'>Schema.org</a> &gt <a href='http://schema.org/Thing'>Thing</a> &gt <a href='http://schema.org/CreativeWork'>CreativeWork</a> &gt <a  href='http://schema.org/Book'>Book</a>:</h3>
+    <p>{{ view(book.schema) }}</p>
+</div>
+<div id="rdfa">
+    <p>Is a W3C recommended set of attributes for embedding RDF tripples into web documents.</p>
+    <h3><a href="http://www.w3.org/TR/xhtml-rdfa-primer/">RDFa Primer</a> using <a href="http://www.data-vocabulary.org/">Data Vocabulary</a> and <a href="http://dublincore.org/">Dublin Core</a>:</h3>
+    <p>{{ view(book.rdfa) }}</p>
+</div>
+<div id="microformats">
+    <p>Is a <a href="http://microformats.org/">community</a> approach of adding semantic markup to the Web.</p>
+    <h3><a href='http://www.isbner.org'>Isbner</a> &gt <a href='http://www.isbner.org/schema/Book'>Book</a>:</h3>
+    <p>{{ view(book.microformats) }}</p>
+</div>
+<div id="json">
+    <p>Is a widely spread format for presenting date in textual human-readable form.</p>
+    <h3><a href='http://www.json.org'>JSON</a>:</h3>
+    <p>{{ view(book) }} {#% include "demo.html" %#}</p>
+</div>
+
+<script>
+  var tab = new Control.Tabs('demotabs');
+</script>
+
+</div>

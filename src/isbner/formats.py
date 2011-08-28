@@ -84,9 +84,9 @@ def prepare(raw):
 def truncate_urls(data):
     urls = re.findall(u'"(http:.*?)"', data)
     maxlen = 35
-    tail = '…'
+    tail = u'…'
     for url in urls:
         if len(url) > maxlen - len(tail):
-            data = data.replace(url, '%s%s' % (url[:maxlen], tail))
+            data = data.replace(url, u'%s%s' % (url[:maxlen], tail))
     return data
 
