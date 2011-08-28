@@ -1,0 +1,24 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+<h2 class="page-title">Search providers status</h2>
+<br/>
+{% if info %}
+<table>
+  {% for key in info|sort %}
+  <tr>
+    <td style="padding-right: 10px;">{{ key }}:</td>
+    {% if info[key] %}
+    <td><img src="/img/status_good.gif"></td>
+    {% else %}
+    <td><img src="/img/status_alert.gif"></td>
+    {% endif %}
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<h3>Unknown</h3>
+{% endif %}
+
+{% endblock %}
